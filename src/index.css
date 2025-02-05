@@ -48,3 +48,18 @@
 .text-gradient {
   @apply bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent;
 }
+
+@keyframes fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.5s ease-out forwards;
+}
