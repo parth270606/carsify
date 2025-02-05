@@ -1,3 +1,4 @@
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -18,7 +19,7 @@ const formSchema = z.object({
   }),
 });
 
-export function BookingForm({ onClose }: { onClose: () => void }) {
+export function BookingForm({ onClose, carPrice }: { onClose: () => void; carPrice?: number }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,7 +32,14 @@ export function BookingForm({ onClose }: { onClose: () => void }) {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    toast.success("Booking submitted successfully!");
+    if (values.paymentMethod === "upi") {
+      // Generate QR code URL using a mock UPI ID
+      const upiUrl = `upi://pay?pa=carsify@upi&pn=Carsify&am=${carPrice}&cu=INR&tn=Car%20Rental%20Payment`;
+      // In a real app, you would generate a QR code using the UPI URL
+      toast.success("Payment QR code generated! Please scan to complete payment.");
+    } else {
+      toast.success("Cash payment selected. Our team will contact you for collection.");
+    }
     console.log(values);
     onClose();
   }
@@ -129,6 +137,18 @@ export function BookingForm({ onClose }: { onClose: () => void }) {
             </FormItem>
           )}
         />
+
+        {form.watch("paymentMethod") === "upi" && carPrice && (
+          <div className="p-4 bg-secondary/20 rounded-lg text-center">
+            <p className="text-sm text-muted-foreground mb-2">
+              Scan QR code to pay ₹{carPrice}
+            </p>
+            <div className="w-48 h-48 mx-auto bg-white p-4 rounded-lg">
+              <p className="text-black text-xs">QR Code Placeholder</p>
+              <p className="text-black text-xs mt-2">Amount: ₹{carPrice}</p>
+            </div>
+          </div>
+        )}
 
         <Button type="submit" className="w-full">Submit Booking</Button>
       </form>

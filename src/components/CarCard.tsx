@@ -1,3 +1,4 @@
+
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -68,7 +69,7 @@ export function CarCard({ car }: CarCardProps) {
             </div>
           </>
         ) : (
-          <BookingForm onClose={() => setShowBookingForm(false)} />
+          <BookingForm onClose={() => setShowBookingForm(false)} carPrice={car.pricePerDay} />
         )}
       </DialogContent>
     </Dialog>

@@ -1,46 +1,52 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 
-export default function Auth() {
+export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
-    const registeredEmail = localStorage.getItem("registeredEmail");
-    const registeredPassword = localStorage.getItem("registeredPassword");
-
-    if (email === registeredEmail && password === registeredPassword) {
-      localStorage.setItem("isAuthenticated", "true");
-      toast.success("Successfully logged in!");
-      navigate("/");
-    } else if (email === "demo@example.com" && password === "password") {
-      // Keep demo account for testing
-      localStorage.setItem("isAuthenticated", "true");
-      toast.success("Successfully logged in!");
-      navigate("/");
+    // For demo purposes, store user data in localStorage
+    if (email && password && username) {
+      localStorage.setItem("registeredEmail", email);
+      localStorage.setItem("registeredPassword", password);
+      localStorage.setItem("registeredUsername", username);
+      toast.success("Registration successful! Please login.");
+      navigate("/auth");
     } else {
-      toast.error("Invalid credentials! Please check your email and password.");
+      toast.error("Please fill in all fields");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <div className="w-full max-w-md space-y-8 glass-card p-8 rounded-xl">
+      <div className="w-full max-w-md space-y-8 glass-card p-8 rounded-xl animate-fade-up">
         <div className="text-center space-y-6">
-          <h1 className="text-4xl font-bold animate-fade-in text-gradient">
-            Welcome Back
+          <h1 className="text-4xl font-bold text-gradient">
+            Join Carsify
           </h1>
           <p className="text-muted-foreground">
-            Please login to continue to Carsify.
+            Create an account to start renting premium cars.
           </p>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-6 mt-8">
+        <form onSubmit={handleRegister} className="space-y-6 mt-8">
+          <div className="space-y-2">
+            <Input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="bg-secondary/50"
+            />
+          </div>
           <div className="space-y-2">
             <Input
               type="email"
@@ -60,20 +66,21 @@ export default function Auth() {
             />
           </div>
           <Button type="submit" className="w-full">
-            Login
+            Register
           </Button>
           <p className="text-center text-sm text-muted-foreground">
-            Don't have an account?{" "}
+            Already have an account?{" "}
             <Button
               variant="link"
               className="p-0"
-              onClick={() => navigate("/register")}
+              onClick={() => navigate("/auth")}
             >
-              Register here
+              Login here
             </Button>
           </p>
         </form>
       </div>
     </div>
+  </div>
   );
 }
