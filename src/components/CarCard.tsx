@@ -2,12 +2,16 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Car } from "@/types/car";
+import { useState } from "react";
+import { BookingForm } from "./BookingForm";
 
 interface CarCardProps {
   car: Car;
 }
 
 export function CarCard({ car }: CarCardProps) {
+  const [showBookingForm, setShowBookingForm] = useState(false);
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -27,37 +31,45 @@ export function CarCard({ car }: CarCardProps) {
         </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>{car.name}</DialogTitle>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="aspect-[16/9] rounded-lg overflow-hidden">
-            <img
-              src={car.image}
-              alt={car.name}
-              className="object-cover w-full h-full"
-            />
-          </div>
-          <div className="grid gap-2">
-            <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">Category</span>
-              <span>{car.category}</span>
+        {!showBookingForm ? (
+          <>
+            <DialogHeader>
+              <DialogTitle>{car.name}</DialogTitle>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="aspect-[16/9] rounded-lg overflow-hidden">
+                <img
+                  src={car.image}
+                  alt={car.name}
+                  className="object-cover w-full h-full"
+                />
+              </div>
+              <div className="grid gap-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground">Category</span>
+                  <span>{car.category}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground">Price per day</span>
+                  <span>₹{car.pricePerDay}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground">Seats</span>
+                  <span>{car.seats}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground">Transmission</span>
+                  <span>{car.transmission}</span>
+                </div>
+              </div>
+              <Button className="w-full" onClick={() => setShowBookingForm(true)}>
+                Book Now
+              </Button>
             </div>
-            <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">Price per day</span>
-              <span>₹{car.pricePerDay}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">Seats</span>
-              <span>{car.seats}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">Transmission</span>
-              <span>{car.transmission}</span>
-            </div>
-          </div>
-          <Button className="w-full">Book Now</Button>
-        </div>
+          </>
+        ) : (
+          <BookingForm onClose={() => setShowBookingForm(false)} />
+        )}
       </DialogContent>
     </Dialog>
   );
