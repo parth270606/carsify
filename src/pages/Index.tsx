@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { CarCard } from "@/components/CarCard";
 import { CategoryFilter } from "@/components/CategoryFilter";
@@ -5,6 +6,7 @@ import { cars, categories } from "@/data/cars";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Sun, Moon } from "lucide-react";
+import { ProfileMenu } from "@/components/ProfileMenu";
 
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -20,11 +22,6 @@ const Index = () => {
     const timer = setTimeout(() => setIsLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("isAuthenticated");
-    navigate("/auth");
-  };
 
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
@@ -47,7 +44,7 @@ const Index = () => {
       <div className="max-w-7xl mx-auto space-y-12">
         <div className="flex justify-between items-center">
           <h1 className="text-4xl font-bold text-gradient">Carsify</h1>
-          <div className="flex gap-4">
+          <div className="flex gap-4 items-center">
             <Button
               variant="outline"
               size="icon"
@@ -56,9 +53,7 @@ const Index = () => {
             >
               {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </Button>
-            <Button variant="secondary" onClick={handleLogout}>
-              Logout
-            </Button>
+            <ProfileMenu />
           </div>
         </div>
 

@@ -1,3 +1,4 @@
+
 import { Car } from "@/types/car";
 
 export const cars: Car[] = [
@@ -82,16 +83,6 @@ export const cars: Car[] = [
     available: true,
   },
   {
-    id: "9",
-    name: "Maruti Ertiga",
-    category: "Family",
-    image: "https://images.unsplash.com/photo-1619767886558-efdc259b6e1b?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    pricePerDay: 2500,
-    seats: 7,
-    transmission: "Manual",
-    available: true,
-  },
-  {
     id: "10",
     name: "Rolls-Royce Ghost",
     category: "Luxury",
@@ -100,7 +91,57 @@ export const cars: Car[] = [
     seats: 5,
     transmission: "Automatic",
     available: true,
+  },
+  {
+    id: "11",
+    name: "Porsche Taycan",
+    category: "Electric",
+    image: "https://images.unsplash.com/photo-1614200187524-dc4b892acf16?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    pricePerDay: 12000,
+    seats: 4,
+    transmission: "Automatic",
+    available: true,
+  },
+  {
+    id: "12",
+    name: "BMW iX",
+    category: "Electric",
+    image: "https://images.unsplash.com/photo-1656468014942-fcb31039c14a?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    pricePerDay: 8500,
+    seats: 5,
+    transmission: "Automatic",
+    available: true,
+  },
+  {
+    id: "13",
+    name: "Audi Q8",
+    category: "SUV",
+    image: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    pricePerDay: 11000,
+    seats: 7,
+    transmission: "Automatic",
+    available: true,
+  },
+  {
+    id: "14",
+    name: "Ferrari SF90",
+    category: "Sports",
+    image: "https://images.unsplash.com/photo-1592198084033-aade902d1aae?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    pricePerDay: 35000,
+    seats: 2,
+    transmission: "Automatic",
+    available: true,
+  },
+  {
+    id: "15",
+    name: "Bentley Flying Spur",
+    category: "Luxury",
+    image: "https://images.unsplash.com/photo-1632548260498-b7246fa466ea?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    pricePerDay: 28000,
+    seats: 5,
+    transmission: "Automatic",
+    available: true,
   }
 ];
 
-export const categories = Array.from(new Set(cars.map((car) => car.category)));
+export const categories = Array.from(new Set(cars.map((car) => car.category))).filter(category => category !== "Family");
