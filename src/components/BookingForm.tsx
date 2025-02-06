@@ -1,3 +1,4 @@
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -53,15 +54,13 @@ export function BookingForm({ onClose, carPrice = 0 }: BookingFormProps) {
   const startDate = form.watch("startDate");
   const endDate = form.watch("endDate");
 
-  // Calculate total days and price
   const calculateTotalPrice = (start: Date, end: Date) => {
     if (!start || !end) return carPrice;
     const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
-    // Apply discount for longer rentals
     let discount = 0;
-    if (days >= 7) discount = 0.1; // 10% discount for 7+ days
-    if (days >= 14) discount = 0.15; // 15% discount for 14+ days
-    if (days >= 30) discount = 0.2; // 20% discount for 30 days
+    if (days >= 7) discount = 0.1;
+    if (days >= 14) discount = 0.15;
+    if (days >= 30) discount = 0.2;
     const totalPrice = carPrice * days * (1 - discount);
     return Math.round(totalPrice);
   };
@@ -69,87 +68,96 @@ export function BookingForm({ onClose, carPrice = 0 }: BookingFormProps) {
   const totalPrice = startDate && endDate ? calculateTotalPrice(startDate, endDate) : carPrice;
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Validate rental duration
     const days = Math.ceil((values.endDate.getTime() - values.startDate.getTime()) / (1000 * 60 * 60 * 24));
     if (days < 1 || days > 30) {
       toast.error("Rental duration must be between 1 and 30 days");
       return;
     }
-
-    // Show payment interface
     setShowPayment(true);
   }
 
   if (showPayment) {
     return (
       <DialogContent className="max-w-md">
-        <div className="space-y-6">
-          <div className="text-center">
-            <h3 className="text-lg font-semibold">Complete Payment</h3>
-            <p className="text-sm text-muted-foreground">Choose your payment method to proceed</p>
-          </div>
+        <Form {...form}>
+          <div className="space-y-6">
+            <div className="text-center">
+              <h3 className="text-lg font-semibold">Complete Payment</h3>
+              <p className="text-sm text-muted-foreground">Choose your payment method to proceed</p>
+            </div>
 
-          <div className="space-y-4">
-            <RadioGroup
-              value={form.watch("paymentMethod")}
-              onValueChange={(value) => form.setValue("paymentMethod", value as "upi" | "cash")}
-              className="flex flex-col space-y-4"
-            >
-              <FormItem className="flex items-center space-x-3 space-y-0">
-                <FormControl>
-                  <RadioGroupItem value="upi" />
-                </FormControl>
-                <FormLabel className="font-normal">UPI Payment</FormLabel>
-              </FormItem>
-              <FormItem className="flex items-center space-x-3 space-y-0">
-                <FormControl>
-                  <RadioGroupItem value="cash" />
-                </FormControl>
-                <FormLabel className="font-normal">Cash Payment</FormLabel>
-              </FormItem>
-            </RadioGroup>
+            <div className="space-y-4">
+              <FormField
+                control={form.control}
+                name="paymentMethod"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        className="flex flex-col space-y-4"
+                      >
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="upi" />
+                          </FormControl>
+                          <FormLabel className="font-normal">UPI Payment</FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="cash" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Cash Payment</FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
-            {form.watch("paymentMethod") === "upi" && (
-              <div className="p-4 bg-white rounded-lg text-center space-y-4">
-                <img 
-                  src="/lovable-uploads/8e6ef68f-f191-4ab2-885f-ab80f018ef6f.png" 
-                  alt="UPI QR Code"
-                  className="w-48 h-48 mx-auto"
-                />
-                <p className="text-sm font-medium">Amount: ₹{totalPrice}</p>
+              {form.watch("paymentMethod") === "upi" && (
+                <div className="p-4 bg-white rounded-lg text-center space-y-4">
+                  <img 
+                    src="/lovable-uploads/8e6ef68f-f191-4ab2-885f-ab80f018ef6f.png" 
+                    alt="UPI QR Code"
+                    className="w-48 h-48 mx-auto"
+                  />
+                  <p className="text-sm font-medium">Amount: ₹{totalPrice}</p>
+                </div>
+              )}
+
+              {form.watch("paymentMethod") === "cash" && (
+                <div className="p-4 bg-secondary/20 rounded-lg">
+                  <p className="text-sm">Our representative will contact you for cash collection.</p>
+                </div>
+              )}
+
+              <div className="flex gap-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => setShowPayment(false)}
+                >
+                  Back
+                </Button>
+                <Button
+                  type="button"
+                  className="w-full"
+                  onClick={() => {
+                    toast.success("Booking request submitted! Awaiting approval.", {
+                      description: "We will verify your documents and confirm your booking within 24 hours.",
+                    });
+                    onClose();
+                  }}
+                >
+                  Confirm Payment
+                </Button>
               </div>
-            )}
-
-            {form.watch("paymentMethod") === "cash" && (
-              <div className="p-4 bg-secondary/20 rounded-lg">
-                <p className="text-sm">Our representative will contact you for cash collection.</p>
-              </div>
-            )}
-
-            <div className="flex gap-4">
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full"
-                onClick={() => setShowPayment(false)}
-              >
-                Back
-              </Button>
-              <Button
-                type="button"
-                className="w-full"
-                onClick={() => {
-                  toast.success("Booking request submitted! Awaiting approval.", {
-                    description: "We will verify your documents and confirm your booking within 24 hours.",
-                  });
-                  onClose();
-                }}
-              >
-                Confirm Payment
-              </Button>
             </div>
           </div>
-        </div>
+        </Form>
       </DialogContent>
     );
   }
