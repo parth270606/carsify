@@ -1,3 +1,4 @@
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -91,7 +92,7 @@ export function BookingForm({ onClose, carPrice = 0, carId }: BookingFormProps) 
 
       const values = form.getValues();
       
-      const { error } = await supabase.from('rentals').insert({
+      const { error } = await supabase.from('rentals').insert([{
         user_id: user.id,
         car_id: carId,
         start_date: values.startDate,
@@ -101,8 +102,8 @@ export function BookingForm({ onClose, carPrice = 0, carId }: BookingFormProps) 
         email: values.email,
         contact: values.contact,
         license: values.license,
-        payment_method: values.paymentMethod,
-      });
+        payment_method: values.paymentMethod
+      }]);
 
       if (error) {
         console.error('Booking error:', error);

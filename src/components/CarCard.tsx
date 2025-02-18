@@ -120,7 +120,11 @@ export function CarCard({ car }: CarCardProps) {
             </ScrollArea>
           </>
         ) : (
-          <BookingForm onClose={() => setShowBookingForm(false)} carPrice={car.pricePerDay} />
+          <BookingForm 
+            onClose={() => setShowBookingForm(false)} 
+            carPrice={car.pricePerDay} 
+            carId={car.id}
+          />
         )}
       </DialogContent>
     </Dialog>
