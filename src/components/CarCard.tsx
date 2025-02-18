@@ -124,6 +124,7 @@ export function CarCard({ car }: CarCardProps) {
             onClose={() => setShowBookingForm(false)} 
             carPrice={car.pricePerDay} 
             carId={car.id}
+            carName={car.name}
           />
         )}
       </DialogContent>

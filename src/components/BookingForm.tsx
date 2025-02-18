@@ -38,9 +38,10 @@ interface BookingFormProps {
   onClose: () => void;
   carPrice?: number;
   carId: string;
+  carName: string;
 }
 
-export function BookingForm({ onClose, carPrice = 0, carId }: BookingFormProps) {
+export function BookingForm({ onClose, carPrice = 0, carId, carName }: BookingFormProps) {
   const [showPayment, setShowPayment] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -95,6 +96,7 @@ export function BookingForm({ onClose, carPrice = 0, carId }: BookingFormProps) 
       const { error } = await supabase.from('rentals').insert([{
         user_id: user.id,
         car_id: carId,
+        car_name: carName,
         start_date: values.startDate,
         end_date: values.endDate,
         total_amount: totalPrice,
