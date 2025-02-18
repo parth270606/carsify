@@ -8,11 +8,10 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import { DialogDescription, DialogContent } from "@/components/ui/dialog";
-import { addDays } from "date-fns";
+import { addDays, format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -93,19 +92,21 @@ export function BookingForm({ onClose, carPrice = 0, carId, carName }: BookingFo
 
       const values = form.getValues();
       
-      const { error } = await supabase.from('rentals').insert([{
+      const { error } = await supabase.from('rentals').insert({
         user_id: user.id,
         car_id: carId,
         car_name: carName,
-        start_date: values.startDate,
-        end_date: values.endDate,
+        start_date: format(values.startDate, 'yyyy-MM-dd'),
+        end_date: format(values.endDate, 'yyyy-MM-dd'),
         total_amount: totalPrice,
         name: values.name,
         email: values.email,
         contact: values.contact,
         license: values.license,
-        payment_method: values.paymentMethod
-      }]);
+        payment_method: values.paymentMethod,
+        booking_status: 'pending',
+        payment_status: 'pending'
+      });
 
       if (error) {
         console.error('Booking error:', error);
