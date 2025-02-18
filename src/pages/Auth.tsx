@@ -14,23 +14,35 @@ export default function Auth() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!email || !password) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
     setIsLoading(true);
     
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password: password.trim(),
       });
 
       if (error) {
-        toast.error(error.message);
-      } else {
+        if (error.message.includes("Email not confirmed")) {
+          toast.error("Please confirm your email before logging in");
+        } else if (error.message.includes("Invalid credentials")) {
+          toast.error("Invalid email or password. Please try again or register if you don't have an account.");
+        } else {
+          toast.error(error.message);
+        }
+      } else if (data.user) {
         localStorage.setItem("isAuthenticated", "true");
         toast.success("Successfully logged in!");
         navigate("/");
       }
     } catch (error) {
-      toast.error("An error occurred during login");
+      toast.error("An error occurred during login. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -57,6 +69,7 @@ export default function Auth() {
               onChange={(e) => setEmail(e.target.value)}
               className="bg-secondary/50"
               disabled={isLoading}
+              required
             />
           </div>
           <div className="space-y-2">
@@ -67,6 +80,8 @@ export default function Auth() {
               onChange={(e) => setPassword(e.target.value)}
               className="bg-secondary/50"
               disabled={isLoading}
+              required
+              minLength={6}
             />
           </div>
           <Button type="submit" className="w-full" disabled={isLoading}>
