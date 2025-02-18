@@ -1,30 +1,38 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const registeredEmail = localStorage.getItem("registeredEmail");
-    const registeredPassword = localStorage.getItem("registeredPassword");
+    setIsLoading(true);
+    
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    if (email === registeredEmail && password === registeredPassword) {
-      localStorage.setItem("isAuthenticated", "true");
-      toast.success("Successfully logged in!");
-      navigate("/");
-    } else if (email === "demo@example.com" && password === "password") {
-      // Keep demo account for testing
-      localStorage.setItem("isAuthenticated", "true");
-      toast.success("Successfully logged in!");
-      navigate("/");
-    } else {
-      toast.error("Invalid credentials! Please check your email and password.");
+      if (error) {
+        toast.error(error.message);
+      } else {
+        localStorage.setItem("isAuthenticated", "true");
+        toast.success("Successfully logged in!");
+        navigate("/");
+      }
+    } catch (error) {
+      toast.error("An error occurred during login");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -48,6 +56,7 @@ export default function Auth() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="bg-secondary/50"
+              disabled={isLoading}
             />
           </div>
           <div className="space-y-2">
@@ -57,10 +66,11 @@ export default function Auth() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="bg-secondary/50"
+              disabled={isLoading}
             />
           </div>
-          <Button type="submit" className="w-full">
-            Login
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? "Loading..." : "Login"}
           </Button>
           <p className="text-center text-sm text-muted-foreground">
             Don't have an account?{" "}
@@ -68,6 +78,7 @@ export default function Auth() {
               variant="link"
               className="p-0"
               onClick={() => navigate("/register")}
+              disabled={isLoading}
             >
               Register here
             </Button>

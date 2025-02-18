@@ -4,24 +4,46 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    // For demo purposes, store user data in localStorage
-    if (email && password && username) {
-      localStorage.setItem("registeredEmail", email);
-      localStorage.setItem("registeredPassword", password);
-      localStorage.setItem("registeredUsername", username);
-      toast.success("Registration successful! Please login.");
-      navigate("/auth");
-    } else {
+    setIsLoading(true);
+
+    if (!email || !password || !username) {
       toast.error("Please fill in all fields");
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            username,
+          },
+        },
+      });
+
+      if (error) {
+        toast.error(error.message);
+      } else {
+        toast.success("Registration successful! Please login.");
+        navigate("/auth");
+      }
+    } catch (error) {
+      toast.error("An error occurred during registration");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -29,9 +51,7 @@ export default function Register() {
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-md space-y-8 glass-card p-8 rounded-xl animate-fade-up">
         <div className="text-center space-y-6">
-          <h1 className="text-4xl font-bold text-gradient">
-            Join Carsify
-          </h1>
+          <h1 className="text-4xl font-bold text-gradient">Join Carsify</h1>
           <p className="text-muted-foreground">
             Create an account to start renting premium cars.
           </p>
@@ -45,6 +65,7 @@ export default function Register() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="bg-secondary/50"
+              disabled={isLoading}
             />
           </div>
           <div className="space-y-2">
@@ -54,6 +75,7 @@ export default function Register() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="bg-secondary/50"
+              disabled={isLoading}
             />
           </div>
           <div className="space-y-2">
@@ -63,10 +85,11 @@ export default function Register() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="bg-secondary/50"
+              disabled={isLoading}
             />
           </div>
-          <Button type="submit" className="w-full">
-            Register
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? "Loading..." : "Register"}
           </Button>
           <p className="text-center text-sm text-muted-foreground">
             Already have an account?{" "}
@@ -74,6 +97,7 @@ export default function Register() {
               variant="link"
               className="p-0"
               onClick={() => navigate("/auth")}
+              disabled={isLoading}
             >
               Login here
             </Button>
