@@ -9,7 +9,57 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      rentals: {
+        Row: {
+          booking_status: string
+          car_id: string
+          contact: string
+          created_at: string
+          email: string
+          end_date: string
+          id: string
+          license: string
+          name: string
+          payment_method: string
+          payment_status: string
+          start_date: string
+          total_amount: number
+          user_id: string
+        }
+        Insert: {
+          booking_status?: string
+          car_id: string
+          contact: string
+          created_at?: string
+          email: string
+          end_date: string
+          id?: string
+          license: string
+          name: string
+          payment_method: string
+          payment_status?: string
+          start_date: string
+          total_amount: number
+          user_id: string
+        }
+        Update: {
+          booking_status?: string
+          car_id?: string
+          contact?: string
+          created_at?: string
+          email?: string
+          end_date?: string
+          id?: string
+          license?: string
+          name?: string
+          payment_method?: string
+          payment_status?: string
+          start_date?: string
+          total_amount?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -1,4 +1,3 @@
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -16,6 +15,7 @@ import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { supabase } from "@/integrations/supabase/client";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -36,10 +36,13 @@ const formSchema = z.object({
 interface BookingFormProps {
   onClose: () => void;
   carPrice?: number;
+  carId: string;
 }
 
-export function BookingForm({ onClose, carPrice = 0 }: BookingFormProps) {
+export function BookingForm({ onClose, carPrice = 0, carId }: BookingFormProps) {
   const [showPayment, setShowPayment] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -67,7 +70,7 @@ export function BookingForm({ onClose, carPrice = 0 }: BookingFormProps) {
 
   const totalPrice = startDate && endDate ? calculateTotalPrice(startDate, endDate) : carPrice;
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     const days = Math.ceil((values.endDate.getTime() - values.startDate.getTime()) / (1000 * 60 * 60 * 24));
     if (days < 1 || days > 30) {
       toast.error("Rental duration must be between 1 and 30 days");
@@ -75,6 +78,49 @@ export function BookingForm({ onClose, carPrice = 0 }: BookingFormProps) {
     }
     setShowPayment(true);
   }
+
+  const handlePaymentConfirmation = async () => {
+    setIsSubmitting(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        toast.error("Please login to complete the booking");
+        return;
+      }
+
+      const values = form.getValues();
+      
+      const { error } = await supabase.from('rentals').insert({
+        user_id: user.id,
+        car_id: carId,
+        start_date: values.startDate,
+        end_date: values.endDate,
+        total_amount: totalPrice,
+        name: values.name,
+        email: values.email,
+        contact: values.contact,
+        license: values.license,
+        payment_method: values.paymentMethod,
+      });
+
+      if (error) {
+        console.error('Booking error:', error);
+        toast.error("Failed to complete booking. Please try again.");
+        return;
+      }
+
+      toast.success("Booking request submitted! Awaiting approval.", {
+        description: "We will verify your documents and confirm your booking within 24 hours.",
+      });
+      onClose();
+    } catch (error) {
+      console.error('Submission error:', error);
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   if (showPayment) {
     return (
@@ -139,20 +185,17 @@ export function BookingForm({ onClose, carPrice = 0 }: BookingFormProps) {
                   variant="outline"
                   className="w-full"
                   onClick={() => setShowPayment(false)}
+                  disabled={isSubmitting}
                 >
                   Back
                 </Button>
                 <Button
                   type="button"
                   className="w-full"
-                  onClick={() => {
-                    toast.success("Booking request submitted! Awaiting approval.", {
-                      description: "We will verify your documents and confirm your booking within 24 hours.",
-                    });
-                    onClose();
-                  }}
+                  onClick={handlePaymentConfirmation}
+                  disabled={isSubmitting}
                 >
-                  Confirm Payment
+                  {isSubmitting ? "Processing..." : "Confirm Payment"}
                 </Button>
               </div>
             </div>
