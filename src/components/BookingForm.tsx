@@ -1,4 +1,3 @@
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -21,7 +20,10 @@ const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   contact: z.string().min(10, "Contact number must be at least 10 digits"),
-  license: z.string().min(5, "License number is required"),
+  license: z.string()
+    .min(15, "License number must be exactly 15 characters")
+    .max(15, "License number must be exactly 15 characters")
+    .regex(/^[A-Z0-9]+$/, "License number must contain only uppercase letters and numbers"),
   startDate: z.date({
     required_error: "Start date is required",
   }),
@@ -53,6 +55,7 @@ export function BookingForm({ onClose, carPrice = 0, carId, carName }: BookingFo
       license: "",
       paymentMethod: "upi",
     },
+    mode: "onChange",
   });
 
   const startDate = form.watch("startDate");
@@ -352,7 +355,15 @@ export function BookingForm({ onClose, carPrice = 0, carId, carName }: BookingFo
                 <FormItem>
                   <FormLabel>Driving License Number</FormLabel>
                   <FormControl>
-                    <Input placeholder="DL123456789" {...field} />
+                    <Input 
+                      placeholder="Enter valid Driving License number" 
+                      {...field} 
+                      maxLength={15}
+                      onChange={(e) => {
+                        const value = e.target.value.toUpperCase();
+                        field.onChange(value);
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -373,7 +384,13 @@ export function BookingForm({ onClose, carPrice = 0, carId, carName }: BookingFo
               )}
             </div>
 
-            <Button type="submit" className="w-full">Proceed to Payment</Button>
+            <Button 
+              type="submit" 
+              className="w-full"
+              disabled={!form.formState.isValid}
+            >
+              Proceed to Payment
+            </Button>
 
             <p className="text-xs text-muted-foreground text-center">
               Note: Full refund available on booking cancellation before the start date. 
