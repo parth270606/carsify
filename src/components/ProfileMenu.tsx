@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -5,41 +6,21 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { UserCircle, Settings, History, LogOut } from "lucide-react";
+import { UserCircle, Settings, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function ProfileMenu() {
   const navigate = useNavigate();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated");
     navigate("/auth");
   };
-
-  // Mock rental history data - replace with actual data in production
-  const rentalHistory = [
-    {
-      id: 1,
-      carName: "Tesla Model S",
-      date: "2024-02-15",
-      duration: "3 days",
-      status: "Completed"
-    },
-    {
-      id: 2,
-      carName: "BMW M4",
-      date: "2024-01-20",
-      duration: "2 days",
-      status: "Completed"
-    }
-  ];
 
   return (
     <DropdownMenu>
@@ -79,45 +60,6 @@ export function ProfileMenu() {
               </div>
               <Button variant="destructive">Delete Account</Button>
             </div>
-          </DialogContent>
-        </Dialog>
-
-        <Dialog open={isHistoryOpen} onOpenChange={setIsHistoryOpen}>
-          <DialogTrigger asChild>
-            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-              <History className="mr-2 h-4 w-4" />
-              <span>Rental History</span>
-            </DropdownMenuItem>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[525px]">
-            <DialogHeader>
-              <DialogTitle>Rental History</DialogTitle>
-            </DialogHeader>
-            <ScrollArea className="h-[400px] pr-4">
-              {rentalHistory.length > 0 ? (
-                <div className="space-y-4">
-                  {rentalHistory.map((rental) => (
-                    <div
-                      key={rental.id}
-                      className="flex flex-col space-y-2 border rounded-lg p-4"
-                    >
-                      <div className="flex justify-between items-center">
-                        <h4 className="font-semibold">{rental.carName}</h4>
-                        <span className="text-sm text-green-500">{rental.status}</span>
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        <p>Date: {rental.date}</p>
-                        <p>Duration: {rental.duration}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-muted-foreground text-center py-4">
-                  No rental history found.
-                </p>
-              )}
-            </ScrollArea>
           </DialogContent>
         </Dialog>
 
