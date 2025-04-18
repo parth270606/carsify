@@ -106,7 +106,7 @@ export const cars: Car[] = [
     id: "12",
     name: "BMW iX",
     category: "Electric",
-    image: "https://images.unsplash.com/photo-1652011499550-ac5ddf38ab52?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    image: "https://images.unsplash.com/photo-1600268330186-76564be81357?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     pricePerDay: 8500,
     seats: 5,
     transmission: "Automatic",
