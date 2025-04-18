@@ -20,6 +20,11 @@ export default function Auth() {
       return;
     }
 
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters long");
+      return;
+    }
+
     setIsLoading(true);
     
     try {
@@ -75,13 +80,13 @@ export default function Auth() {
           <div className="space-y-2">
             <Input
               type="password"
-              placeholder="Password"
+              placeholder="Password (minimum 8 characters)"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="bg-secondary/50"
               disabled={isLoading}
               required
-              minLength={6}
+              minLength={8}
             />
           </div>
           <Button type="submit" className="w-full" disabled={isLoading}>

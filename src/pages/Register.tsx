@@ -23,6 +23,12 @@ export default function Register() {
       return;
     }
 
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters long");
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const { error } = await supabase.auth.signUp({
         email,
@@ -66,6 +72,7 @@ export default function Register() {
               onChange={(e) => setUsername(e.target.value)}
               className="bg-secondary/50"
               disabled={isLoading}
+              required
             />
           </div>
           <div className="space-y-2">
@@ -76,16 +83,19 @@ export default function Register() {
               onChange={(e) => setEmail(e.target.value)}
               className="bg-secondary/50"
               disabled={isLoading}
+              required
             />
           </div>
           <div className="space-y-2">
             <Input
               type="password"
-              placeholder="Password"
+              placeholder="Password (minimum 8 characters)"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="bg-secondary/50"
               disabled={isLoading}
+              required
+              minLength={8}
             />
           </div>
           <Button type="submit" className="w-full" disabled={isLoading}>
