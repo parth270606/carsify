@@ -1,3 +1,4 @@
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -108,8 +109,8 @@ export function BookingForm({ onClose, carPrice = 0, carId, carName }: BookingFo
         contact: values.contact,
         license: values.license,
         payment_method: values.paymentMethod,
-        booking_status: 'pending',
-        payment_status: 'pending'
+        booking_status: 'completed',
+        payment_status: 'completed'
       });
 
       if (error) {
@@ -118,8 +119,8 @@ export function BookingForm({ onClose, carPrice = 0, carId, carName }: BookingFo
         return;
       }
 
-      toast.success("Booking request submitted! Awaiting approval.", {
-        description: "We will verify your documents and confirm your booking within 24 hours.",
+      toast.success(`Booking completed for ${carName}!`, {
+        description: "Your car has been successfully booked.",
       });
       onClose();
     } catch (error) {
