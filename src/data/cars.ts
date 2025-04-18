@@ -166,7 +166,7 @@ export const cars: Car[] = [
     id: "18",
     name: "Maruti Baleno",
     category: "Popular",
-    image: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    image: "https://images.unsplash.com/photo-1655015887321-5826a531e7ce?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     pricePerDay: 1700,
     seats: 5,
     transmission: "Manual",
