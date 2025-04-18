@@ -101,14 +101,6 @@ export function ProfileMenu() {
     navigate("/auth");
   };
 
-  const handleDeleteAccount = async () => {
-    toast({
-      title: "Not Implemented",
-      description: "Account deletion is not yet implemented.",
-      variant: "destructive",
-    });
-  };
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -126,11 +118,11 @@ export function ProfileMenu() {
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>Profile Settings</DialogTitle>
+              <DialogTitle>Your Profile</DialogTitle>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid gap-2">
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="name">Full Name</Label>
                 <Input 
                   id="name" 
                   value={profileData.full_name}
@@ -139,7 +131,7 @@ export function ProfileMenu() {
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">Email Address</Label>
                 <Input 
                   id="email" 
                   type="email" 
@@ -168,28 +160,15 @@ export function ProfileMenu() {
                   placeholder="Recovery contact number"
                 />
               </div>
-              <Button onClick={handleUpdateProfile}>Save Changes</Button>
-              <Button variant="destructive" onClick={handleDeleteAccount}>Delete Account</Button>
+              <div className="flex justify-end space-x-4 mt-4">
+                <Button variant="outline" onClick={() => setIsProfileOpen(false)}>Cancel</Button>
+                <Button onClick={handleUpdateProfile}>Save Changes</Button>
+              </div>
             </div>
           </DialogContent>
         </Dialog>
 
-        <Dialog open={isHistoryOpen} onOpenChange={setIsHistoryOpen}>
-          <DialogTrigger asChild>
-            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-              <History className="mr-2 h-4 w-4" />
-              <span>Booking History</span>
-            </DropdownMenuItem>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[700px]">
-            <DialogHeader>
-              <DialogTitle>Booking History</DialogTitle>
-            </DialogHeader>
-            <BookingHistory />
-          </DialogContent>
-        </Dialog>
-
-        <DropdownMenuItem onClick={handleLogout}>
+        <DropdownMenuItem onClick={handleLogout} className="text-red-500 dark:text-red-400">
           <LogOut className="mr-2 h-4 w-4" />
           <span>Logout</span>
         </DropdownMenuItem>
