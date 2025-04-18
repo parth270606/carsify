@@ -45,7 +45,7 @@ export const cars: Car[] = [
     id: "5",
     name: "Toyota Innova",
     category: "Family",
-    image: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.toyotabharat.com%2Fshowroom%2Finnova%2F&psig=AOvVaw312HxUk0vWjCNj9ZD2CSTt&ust=1745086356387000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCPi9g8OX4owDFQAAAAAdAAAAABAE",
+    image: "https://unsplash.com/photos/black-and-silver-nissan-suv-PmSwFm4Lw1c",
     pricePerDay: 3000,
     seats: 7,
     transmission: "Manual",
