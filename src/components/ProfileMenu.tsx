@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -37,6 +36,11 @@ export function ProfileMenu() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
+      setProfileData(prev => ({
+        ...prev,
+        email: user.email || "",
+      }));
+
       const { data: profile, error } = await supabase
         .from('profiles')
         .select('*')
@@ -45,12 +49,12 @@ export function ProfileMenu() {
 
       if (error) throw error;
       if (profile) {
-        setProfileData({
+        setProfileData(prev => ({
+          ...prev,
           full_name: profile.full_name || "",
-          email: profile.email || "",
           phone: profile.phone || "",
           recovery_phone: profile.recovery_phone || "",
-        });
+        }));
       }
     } catch (error) {
       console.error('Error fetching profile:', error);
@@ -95,7 +99,6 @@ export function ProfileMenu() {
   };
 
   const handleDeleteAccount = async () => {
-    // This is a placeholder - account deletion would need to be implemented
     toast({
       title: "Not Implemented",
       description: "Account deletion is not yet implemented.",
@@ -124,9 +127,10 @@ export function ProfileMenu() {
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid gap-2">
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="name">Full Name</Label>
                 <Input 
                   id="name" 
+                  placeholder="Enter your full name"
                   value={profileData.full_name}
                   onChange={(e) => setProfileData(prev => ({ ...prev, full_name: e.target.value }))}
                 />
@@ -146,6 +150,7 @@ export function ProfileMenu() {
                 <Input 
                   id="phone" 
                   type="tel" 
+                  placeholder="Enter your phone number"
                   value={profileData.phone}
                   onChange={(e) => setProfileData(prev => ({ ...prev, phone: e.target.value }))}
                 />
@@ -155,11 +160,17 @@ export function ProfileMenu() {
                 <Input 
                   id="recovery" 
                   type="tel" 
+                  placeholder="Enter recovery phone number"
                   value={profileData.recovery_phone}
                   onChange={(e) => setProfileData(prev => ({ ...prev, recovery_phone: e.target.value }))}
                 />
               </div>
-              <Button onClick={handleUpdateProfile}>Save Changes</Button>
+              <div className="flex gap-2 justify-end">
+                <Button variant="outline" onClick={() => setIsProfileOpen(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={handleUpdateProfile}>Save Changes</Button>
+              </div>
               <Button variant="destructive" onClick={handleDeleteAccount}>Delete Account</Button>
             </div>
           </DialogContent>
@@ -180,7 +191,7 @@ export function ProfileMenu() {
           </DialogContent>
         </Dialog>
 
-        <DropdownMenuItem onClick={handleLogout}>
+        <DropdownMenuItem onClick={handleLogout} className="text-red-500">
           <LogOut className="mr-2 h-4 w-4" />
           <span>Logout</span>
         </DropdownMenuItem>
