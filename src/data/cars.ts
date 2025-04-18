@@ -1,3 +1,4 @@
+
 import { Car } from "@/types/car";
 
 export const cars: Car[] = [
@@ -145,7 +146,7 @@ export const cars: Car[] = [
     id: "16",
     name: "Maruti Swift",
     category: "Popular",
-    image: "https://images.unsplash.com/photo-1685553775428-148e02caa971?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    image: "https://images.unsplash.com/photo-1625052985619-7a9c79f52eaa?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
     pricePerDay: 1500,
     seats: 5,
     transmission: "Manual",
@@ -155,7 +156,7 @@ export const cars: Car[] = [
     id: "17",
     name: "Hyundai i20",
     category: "Popular",
-    image: "https://images.unsplash.com/photo-1675037067575-90ab19152bdb?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    image: "https://images.unsplash.com/photo-1701427835615-7de6cd4dcb43?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
     pricePerDay: 1800,
     seats: 5,
     transmission: "Manual",
@@ -165,7 +166,7 @@ export const cars: Car[] = [
     id: "18",
     name: "Maruti Baleno",
     category: "Popular",
-    image: "https://images.unsplash.com/photo-1663163235787-8724f214a033?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    image: "https://images.unsplash.com/photo-1701427835615-7de6cd4dcb43?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
     pricePerDay: 1700,
     seats: 5,
     transmission: "Manual",
@@ -175,7 +176,7 @@ export const cars: Car[] = [
     id: "19",
     name: "Tata Nexon",
     category: "Popular",
-    image: "https://images.unsplash.com/photo-1690610590436-c6ce07f89674?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    image: "https://images.unsplash.com/photo-1625052985631-7a9c79f52eaa?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
     pricePerDay: 2000,
     seats: 5,
     transmission: "Manual",
@@ -185,7 +186,7 @@ export const cars: Car[] = [
     id: "20",
     name: "Hyundai Creta",
     category: "Popular",
-    image: "https://images.unsplash.com/photo-1690610590436-c6ce07f89674?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    image: "https://images.unsplash.com/photo-1582639590195-ec2a4a922de4?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
     pricePerDay: 2500,
     seats: 5,
     transmission: "Automatic",
