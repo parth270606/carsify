@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -44,16 +43,22 @@ export function ProfileMenu() {
         .single();
 
       if (error) throw error;
+      
       if (profile) {
         setProfileData({
-          full_name: profile.full_name || "",
-          email: profile.email || "",
+          full_name: profile.full_name || user.user_metadata?.full_name || "",
+          email: profile.email || user.email || "",
           phone: profile.phone || "",
           recovery_phone: profile.recovery_phone || "",
         });
       }
     } catch (error) {
       console.error('Error fetching profile:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load profile data. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -78,6 +83,8 @@ export function ProfileMenu() {
         title: "Profile Updated",
         description: "Your profile has been successfully updated.",
       });
+      
+      setIsProfileOpen(false);
     } catch (error) {
       console.error('Error updating profile:', error);
       toast({
@@ -95,7 +102,6 @@ export function ProfileMenu() {
   };
 
   const handleDeleteAccount = async () => {
-    // This is a placeholder - account deletion would need to be implemented
     toast({
       title: "Not Implemented",
       description: "Account deletion is not yet implemented.",
@@ -129,6 +135,7 @@ export function ProfileMenu() {
                   id="name" 
                   value={profileData.full_name}
                   onChange={(e) => setProfileData(prev => ({ ...prev, full_name: e.target.value }))}
+                  placeholder="Your full name"
                 />
               </div>
               <div className="grid gap-2">
@@ -137,8 +144,8 @@ export function ProfileMenu() {
                   id="email" 
                   type="email" 
                   value={profileData.email}
-                  readOnly 
-                  className="bg-muted"
+                  onChange={(e) => setProfileData(prev => ({ ...prev, email: e.target.value }))}
+                  placeholder="Your email"
                 />
               </div>
               <div className="grid gap-2">
@@ -148,6 +155,7 @@ export function ProfileMenu() {
                   type="tel" 
                   value={profileData.phone}
                   onChange={(e) => setProfileData(prev => ({ ...prev, phone: e.target.value }))}
+                  placeholder="Your phone number"
                 />
               </div>
               <div className="grid gap-2">
@@ -157,6 +165,7 @@ export function ProfileMenu() {
                   type="tel" 
                   value={profileData.recovery_phone}
                   onChange={(e) => setProfileData(prev => ({ ...prev, recovery_phone: e.target.value }))}
+                  placeholder="Recovery contact number"
                 />
               </div>
               <Button onClick={handleUpdateProfile}>Save Changes</Button>
