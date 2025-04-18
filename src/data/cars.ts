@@ -1,4 +1,3 @@
-
 import { Car } from "@/types/car";
 
 export const cars: Car[] = [
@@ -146,7 +145,7 @@ export const cars: Car[] = [
     id: "16",
     name: "Maruti Swift",
     category: "Popular",
-    image: "https://images.unsplash.com/photo-1625052985619-7a9c79f52eaa?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    image: "https://stimg.cardekho.com/images/carexteriorimages/930x620/Maruti/Swift/10406/1697697308816/front-left-side-47.jpg",
     pricePerDay: 1500,
     seats: 5,
     transmission: "Manual",
@@ -156,7 +155,7 @@ export const cars: Car[] = [
     id: "17",
     name: "Hyundai i20",
     category: "Popular",
-    image: "https://images.unsplash.com/photo-1701427835615-7de6cd4dcb43?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    image: "https://stimg.cardekho.com/images/carexteriorimages/930x620/Hyundai/i20/10106/1690544151440/front-left-side-47.jpg",
     pricePerDay: 1800,
     seats: 5,
     transmission: "Manual",
@@ -166,7 +165,7 @@ export const cars: Car[] = [
     id: "18",
     name: "Maruti Baleno",
     category: "Popular",
-    image: "https://images.unsplash.com/photo-1701427835615-7de6cd4dcb43?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    image: "https://stimg.cardekho.com/images/carexteriorimages/930x620/Maruti/Baleno/8674/1677912293957/front-left-side-47.jpg",
     pricePerDay: 1700,
     seats: 5,
     transmission: "Manual",
@@ -176,7 +175,7 @@ export const cars: Car[] = [
     id: "19",
     name: "Tata Nexon",
     category: "Popular",
-    image: "https://images.unsplash.com/photo-1625052985631-7a9c79f52eaa?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    image: "https://stimg.cardekho.com/images/carexteriorimages/930x620/Tata/Nexon/10821/1697023400996/front-left-side-47.jpg",
     pricePerDay: 2000,
     seats: 5,
     transmission: "Manual",
@@ -186,7 +185,7 @@ export const cars: Car[] = [
     id: "20",
     name: "Hyundai Creta",
     category: "Popular",
-    image: "https://images.unsplash.com/photo-1582639590195-ec2a4a922de4?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    image: "https://stimg.cardekho.com/images/carexteriorimages/930x620/Hyundai/Creta/10544/1703837580810/front-left-side-47.jpg",
     pricePerDay: 2500,
     seats: 5,
     transmission: "Automatic",
