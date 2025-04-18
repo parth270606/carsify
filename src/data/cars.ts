@@ -156,7 +156,7 @@ export const cars: Car[] = [
     id: "17",
     name: "Hyundai i20",
     category: "Popular",
-    image: "https://images.unsplash.com/photo-1566008885218-90abf9200ddb?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    image: "https://images.unsplash.com/photo-1646119253693-0b80f2906791?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     pricePerDay: 1800,
     seats: 5,
     transmission: "Manual",
